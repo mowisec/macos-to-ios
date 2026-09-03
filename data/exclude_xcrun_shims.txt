@@ -1,0 +1,121 @@
+# The 95 xcrun shims in /usr/bin, excluded BY PATH.
+#
+# This is all that survives of the old data/blocklist_ios.txt (retired
+# 2026-08-31, archived as measurements/retired_blocklist_ios.txt). It is kept
+# because it is the one part of that list that was identified by MEASUREMENT
+# rather than by inference, and because removing it actively breaks the tools
+# it looks like it is blocking.
+#
+# What these are: /usr/bin hard-links ONE inode under 78 names, plus a few
+# more, whose entire body is a call to xcselect_invoke_xcrun -- look up the
+# active Xcode and re-exec into it. There is no Xcode on the phone, so they
+# achieve nothing, and on iOS they do not merely fail, they are SIGKILLed
+# (EXC_ARM_PAC_FAIL, 78 of the 83 kills in the 2026-08-31 probe).
+#
+# Why BY PATH and not by name: the names collide with the REAL tools from the
+# Xcode toolchain, which do port and do work. otool IS llvm-otool, nm IS
+# llvm-nm, objdump IS llvm-objdump. A bare `otool` line here would drop the
+# real one too. machomorph matches a pattern containing '/' against the whole
+# path, so these hit only the shim.
+#
+# When both sides are aliases the /usr/bin scan runs first and wins, which is
+# how bin/otool, bin/nm, bin/objdump, bin/dwarfdump, bin/size and bin/c++filt
+# came to be symlinks to DeRez in an earlier build.
+#
+# Identified by symbol, not by hand: every binary importing
+# _xcselect_invoke_xcrun. Reproduce with machomorph's imports_by_library().
+/usr/bin/DeRez
+/usr/bin/GetFileInfo
+/usr/bin/ResMerger
+/usr/bin/Rez
+/usr/bin/SetFile
+/usr/bin/SplitForks
+/usr/bin/actool
+/usr/bin/agvtool
+/usr/bin/ar
+/usr/bin/as
+/usr/bin/asa
+/usr/bin/bison
+/usr/bin/bm4
+/usr/bin/c++
+/usr/bin/c++filt
+/usr/bin/c89
+/usr/bin/c99
+/usr/bin/cc
+/usr/bin/clang
+/usr/bin/clang++
+/usr/bin/clangd
+/usr/bin/cmpdylib
+/usr/bin/codesign_allocate
+/usr/bin/cpp
+/usr/bin/ctags
+/usr/bin/ctf_insert
+/usr/bin/desdp
+/usr/bin/dsymutil
+/usr/bin/dwarfdump
+/usr/bin/dyld_info
+/usr/bin/flex
+/usr/bin/flex++
+/usr/bin/g++
+/usr/bin/gatherheaderdoc
+/usr/bin/gcc
+/usr/bin/gcov
+/usr/bin/genstrings
+/usr/bin/git
+/usr/bin/git-receive-pack
+/usr/bin/git-shell
+/usr/bin/git-upload-archive
+/usr/bin/git-upload-pack
+/usr/bin/gm4
+/usr/bin/gnumake
+/usr/bin/gperf
+/usr/bin/hdxml2manxml
+/usr/bin/headerdoc2html
+/usr/bin/ibtool
+/usr/bin/ictool
+/usr/bin/indent
+/usr/bin/install_name_tool
+/usr/bin/ld
+/usr/bin/lex
+/usr/bin/libtool
+/usr/bin/lipo
+/usr/bin/lldb
+/usr/bin/llvm-g++
+/usr/bin/llvm-gcc
+/usr/bin/lorder
+/usr/bin/m4
+/usr/bin/make
+/usr/bin/mig
+/usr/bin/nm
+/usr/bin/nmedit
+/usr/bin/objdump
+/usr/bin/opendiff
+/usr/bin/otool
+/usr/bin/pagestuff
+/usr/bin/pip3
+/usr/bin/python3
+/usr/bin/ranlib
+/usr/bin/resolveLinks
+/usr/bin/rpcgen
+/usr/bin/sdef
+/usr/bin/sdp
+/usr/bin/segedit
+/usr/bin/size
+/usr/bin/sourcekit-lsp
+/usr/bin/stapler
+/usr/bin/strings
+/usr/bin/strip
+/usr/bin/swift
+/usr/bin/swiftc
+/usr/bin/unifdef
+/usr/bin/unifdefall
+/usr/bin/vtool
+/usr/bin/xcdebug
+/usr/bin/xcodebuild
+/usr/bin/xcrun
+/usr/bin/xcscontrol
+/usr/bin/xcsdiagnose
+/usr/bin/xctrace
+/usr/bin/xed
+/usr/bin/xml2man
+/usr/bin/yacc

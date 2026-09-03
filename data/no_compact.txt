@@ -1,0 +1,19 @@
+# Images that must NOT have their address space compacted by dsc_compact.
+#
+# One basename per line, '#' comments.  dsc_lift.sh consults this before it
+# runs the compaction step, and skips it -- the library is still lifted, it
+# just keeps the shared cache's 1.6-2.0 GB span like every lift did before
+# compaction existed.
+#
+# This list is a BACKSTOP, not the main mechanism.  dsc_compact already refuses
+# an image it can see is unsafe: one with ObjC or Swift relative-reference
+# sections, whose int32 offsets encode a distance between segments rather than
+# an address.  That check is automatic and does not need an entry here --
+# DiskManagement is refused by it, for instance.
+#
+# Put a name here when compaction SUCCEEDS but the result misbehaves anyway,
+# which is the case the automatic check cannot catch.  Say what was measured
+# and where, so the entry can be retired when the cause is fixed rather than
+# outliving it.
+
+# (none yet -- every failure so far is caught automatically)

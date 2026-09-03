@@ -1,0 +1,5 @@
+*.entitlements.plist
+*.pyc
+__pycache__/
+lifted/
+measurements/removed_*.txt
